@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FNF Mod Doodle Hub</title>
+<meta name="description" content="A friendly doodle-style hub for Friday Night Funkin' mods — skins, songs, and fun effects."/>
+<style>
+  :root{
+    --bg:#fffbe8; --card:#fff; --accent:#ff5b8a; --muted:#6b6b6b; --paper:#fff6e6;
+    --shadow: 0 6px 18px rgba(23,23,23,.08);
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#fffbf2 0%, #fff1ea 100%);color:#222}
+  header{display:flex;align-items:center;gap:14px;padding:22px;max-width:1000px;margin:18px auto}
+  .logo{width:68px;height:68px;background:var(--paper);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);font-weight:800;color:var(--accent);font-size:22px}
+  h1{margin:0;font-size:20px}
+  p.lead{margin:6px 0 0;color:var(--muted)}
+  main{max-width:1000px;margin:10px auto;padding:18px;display:grid;grid-template-columns:1fr 320px;gap:18px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.03)}
+  .search{display:flex;gap:8px;align-items:center;padding:8px;border-radius:10px;background:#fff3ea;border:1px dashed rgba(0,0,0,.04)}
+  input.searchbox{flex:1;border:0;background:transparent;font-size:15px;outline:none;padding:6px}
+  .tag{display:inline-block;background:#fff1f6;color:var(--accent);padding:6px 8px;border-radius:999px;font-weight:600;margin-right:6px;font-size:13px}
+  .mods{display:flex;flex-direction:column;gap:10px}
+  .mod{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg,#ffffff, #fffaf7);border:1px solid rgba(0,0,0,.02)}
+  .thumb{width:84px;height:56px;border-radius:8px;background:linear-gradient(90deg,#ffd1d7,#fff1b8);display:flex;align-items:center;justify-content:center;font-weight:700;color:#6b2535}
+  .meta{flex:1}
+  .title{font-weight:700;margin:0}
+  .desc{margin:6px 0 0;color:var(--muted);font-size:13px}
+  .actions{display:flex;gap:8px;align-items:center}
+  .btn{padding:8px 12px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+  .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,.06);color:#333}
+  aside.card{position:sticky;top:20px;height:fit-content}
+  .small{font-size:13px;color:var(--muted)}
+  footer{text-align:center;padding:20px;color:var(--muted);font-size:13px}
+  @media (max-width:900px){
+    main{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    aside.card{position:static}
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">Doo</div>
+    <div>
+      <h1>FNF Mod Doodle Hub</h1>
+      <p class="lead">A friendly, honest collection of Friday Night Funkin' mods — skins, songs, and fun effects. (Not affiliated with other sites.)</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="card" style="margin-bottom:12px">
+        <div class="search">
+          <input class="searchbox" id="search" placeholder="Search mods (e.g. 'meme', 'week 6')"/>
+          <button class="btn ghost" id="clear">Clear</button>
+        </div>
+        <div style="margin-top:10px">
+          <span class="tag">Skins</span><span class="tag">Songs</span><span class="tag">Fun</span>
+        </div>
+      </div>
+
+      <div class="grid" id="modsGrid">
+        <!-- Mod cards injected here -->
+      </div>
+    </section>
+
+    <aside class="card">
+      <h3 style="margin-top:0">About this hub</h3>
+      <p class="small">This page collects links to community-made FNF mods. Always check the mod author's page and use antivirus when downloading. If you want a mod added, drop the URL below.</p>
+      <div style="margin-top:12px">
+        <input id="addUrl" placeholder="Paste mod URL" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,.06);box-sizing:border-box"/>
+        <button class="btn" id="addBtn" style="width:100%;margin-top:8px">Add Mod</button>
+      </div>
+      <div style="margin-top:12px">
+        <strong>Quick Filters</strong>
+        <div style="margin-top:8px">
+          <button class="btn ghost" data-filter="all">All</button>
+          <button class="btn ghost" data-filter="skins">Skins</button>
+          <button class="btn ghost" data-filter="songs">Songs</button>
+          <button class="btn ghost" data-filter="fun">Fun</button>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <small class="small">Host this page on GitHub Pages for easy sharing.</small>
+      </div>
+    </aside>
+  </main>
+
+  <footer>Made with ❤️ — clearly labeled and honest. Always respect modder licenses and safety.</footer>
+
+<script>
+/* Example dataset — replace URLs with real mod pages */
+const exampleMods = [
+  {id:1,title:"Pixel Boy - Skin Pack",desc:"A pack of pixel art skins and icons.",thumbText:"PIX",tags:["skins"],url:"#"},
+  {id:2,title:"Meme Week Remix",desc:"Remix of classic meme tracks for FNF.",thumbText:"Meme",tags:["songs","fun"],url:"#"},
+  {id:3,title:"Rainbow Notes",desc:"Colorful notes and flashy effects.",thumbText:"🌈",tags:["fun"],url:"#"},
+  {id:4,title:"Ultimate Skins",desc:"Unlock a bunch of custom character skins.",thumbText:"Sk",tags:["skins"],url:"#"},
+  {id:5,title:"Practice Helper",desc:"Practice mode utilities and slow down.",thumbText:"PR",tags:["fun"],url:"#"}
+];
+
+const grid = document.getElementById('modsGrid');
+const searchBox = document.getElementById('search');
+const clearBtn = document.getElementById('clear');
+const addBtn = document.getElementById('addBtn');
+const addUrl = document.getElementById('addUrl');
+
+let mods = [...exampleMods];
+
+function render(list){
+  grid.innerHTML = '';
+  if(list.length === 0){
+    grid.innerHTML = '<div class="card">No mods found — try a different search.</div>';
+    return;
+  }
+  for(const m of list){
+    const el = document.createElement('div');
+    el.className = 'card mod';
+    el.innerHTML = `
+      <div class="thumb">${m.thumbText}</div>
+      <div class="meta">
+        <div class="title">${m.title}</div>
+        <div class="desc">${m.desc}</div>
+        <div style="margin-top:8px" class="small">${m.tags.map(t=>'<span style="margin-right:6px;color:#666">#'+t+'</span>').join('')}</div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="${m.url}" target="_blank" rel="noopener">Open</a>
+        <button class="btn ghost" onclick="copyLink('${m.url}')">Copy</button>
+      </div>
+    `;
+    grid.appendChild(el);
+  }
+}
+
+function copyLink(u){
+  navigator.clipboard.writeText(u).then(()=>alert('Link copied to clipboard'));
+}
+
+searchBox.addEventListener('input', ()=>{
+  const q = searchBox.value.trim().toLowerCase();
+  const filtered = mods.filter(m => (m.title + ' ' + m.desc + ' ' + m.tags.join(' ')).toLowerCase().includes(q));
+  render(filtered);
+});
+clearBtn.addEventListener('click', ()=>{ searchBox.value=''; render(mods); });
+
+addBtn.addEventListener('click', ()=>{
+  const url = addUrl.value.trim();
+  if(!url){ alert('Paste a mod URL first'); return; }
+  const title = prompt('Give this mod a short title (or leave):') || 'User mod';
+  const desc = prompt('Short description (or leave):') || 'No description';
+  mods.unshift({id:Date.now(),title,desc,thumbText:'NM',tags:['fun'],url});
+  addUrl.value='';
+  render(mods);
+  alert('Mod added to the hub (local only). To share publicly, host this file on GitHub Pages.');
+});
+
+// Filter buttons
+document.querySelectorAll('[data-filter]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const f = b.getAttribute('data-filter');
+    if(f === 'all') render(mods);
+    else render(mods.filter(m => m.tags.includes(f)));
+  });
+});
+
+// Initial render
+render(mods);
+</script>
+</body>
+</html>
